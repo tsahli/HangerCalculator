@@ -1,4 +1,4 @@
-#! python
+#!python
 # DewaltHangerCalculator.py
 # Calculates hanger data and prepares label for mail merge
 
@@ -71,11 +71,11 @@ for row in range(4, sheet.max_row):
 
     strutType = sheet['D' + str(row)].value + ': ' + sheet['E' + str(row)].value
     strutTypeList.append(strutType)
-    splitStrut = strutType.split(':')
-    splitStrutList = []
-    splitStrutList.append(splitStrut)
-    strutLength = splitStrut[1].replace('"', '')
-    print strutLength
+    #splitStrut = strutType.split(':')
+    #splitStrutList = []
+    #splitStrutList.append(splitStrut)
+    #strutLength = splitStrut[1].replace('"', '')
+    #print strutLength
 
     allthreadLength = sheet['F' + str(row)].value
     allthreadList.append(allthreadLength)
@@ -101,6 +101,9 @@ for row in range(4, sheet.max_row):
 allthreadListTotal.sort()
 strutTypeListTotal.sort()
 hangerListTotal.sort()
+
+for strut in strutLengthList:
+    splitStrut = strutType.split(':')
 
         # Below prints total counts on each created sheet
 for x in hangerListTotal:
