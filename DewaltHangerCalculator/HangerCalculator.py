@@ -1,5 +1,5 @@
 #!python
-# DewaltHangerCalculator.py
+# HangerCalculator.py
 # Calculates hanger data and prepares label for mail merge
 
 from __future__ import division
@@ -111,9 +111,6 @@ allthreadListTotal.sort()
 strutTypeListTotal.sort()
 hangerListTotal.sort()
 
-for strut in strutLengthList:
-    splitStrut = strutType.split(':')
-
 # Below prints total counts on each created sheet
 for x in hangerListTotal:
     createdAssemblySheet.cell(column = 1, row = next_assembly_row, value = x)
@@ -134,11 +131,17 @@ for x in allthreadListTotal:
 for x in allthreadList:
     x = x.replace('"','')
     x = convert_to_float(x)
-    x = float(x)
     allthreadLengthList.append(x)
 
+for strut in strutTypeList:
+    strut = strut.split(':')
+    #strut = strut.replace('"','')
+    print strut
+
+
 totalAllthreadLength = sum(allthreadLengthList) * 2
-createdAllthreadSheet.cell(column = 1, row = next_allthread_row, value = "Total allthread length = " + str(totalAllthreadLength) + " ft")
+totalAlltrheadLengthFeet = totalAllthreadLength / 12
+createdAllthreadSheet.cell(column = 1, row = next_allthread_row, value = "Total allthread length = " + str(totalAlltrheadLengthFeet) + " ft")
 
 wb.save(excelSheetName + '.xlsx')
 print('------------------------Done------------------------')
