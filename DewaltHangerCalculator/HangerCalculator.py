@@ -2,8 +2,24 @@
 # DewaltHangerCalculator.py
 # Calculates hanger data and prepares label for mail merge
 
+from __future__ import division
 import openpyxl, pprint, time
 from openpyxl.styles import Alignment
+from fractions import Fraction
+
+# This function is needed to sum allthread and strut mixed number strings to floats
+def convert_to_float(frac_str):
+    try:
+        return float(frac_str)
+    except ValueError:
+        num, denom = frac_str.split('/')
+        try:
+            leading, num = num.split(' ')
+            whole = float(leading)
+        except ValueError:
+            whole = 0
+        frac = float(num) / float(denom)
+        return whole - frac if whole < 0 else whole + frac
 
 while True:
     try:
@@ -33,13 +49,13 @@ strutTypeList = []
 strutTypeListTotal = []
 allthreadList = []
 allthreadListTotal = []
+allthreadLengthList = []
 next_strut_length_row = 4
 next_assembly_row = 4
 next_allthread_row = 4
 next_concat_row = 2
 
 # below creates title blocks for each created sheet
-
 createdSheet.merge_cells('A1:B2')
 title = createdSheet.cell(row = 1, column = 1)
 title.value = 'Total Strut'
@@ -64,18 +80,12 @@ createdAssemblySheet.cell(row = 3, column = 2).value = "Quantity"
 createdConcatSheet.cell(row = 1, column = 1).value = "PRINT_ME"
 
 # Below generates 2 lists of values
-
 for row in range(4, sheet.max_row):
     hangerID = sheet['B' + str(row)].value
     hangerList.append(hangerID)
 
     strutType = sheet['D' + str(row)].value + ': ' + sheet['E' + str(row)].value
     strutTypeList.append(strutType)
-    #splitStrut = strutType.split(':')
-    #splitStrutList = []
-    #splitStrutList.append(splitStrut)
-    #strutLength = splitStrut[1].replace('"', '')
-    #print strutLength
 
     allthreadLength = sheet['F' + str(row)].value
     allthreadList.append(allthreadLength)
@@ -92,11 +102,10 @@ for row in range(4, sheet.max_row):
     if hangerID not in hangerListTotal:
         hangerListTotal.append(hangerID)
 
-        # Below creates the concatenation to be used in mail merge
+    # Below creates the concatenation to be used in mail merge
     label = areaName + " Tag: " + hangerID + "                                                           TOU: " + topOfStrut + "                                                                    " + strutType + "                                                               Allthread Length: " + allthreadLength
     createdConcatSheet.cell(column = 1, row = next_concat_row, value = label)
     next_concat_row += 1
-
 
 allthreadListTotal.sort()
 strutTypeListTotal.sort()
@@ -105,7 +114,7 @@ hangerListTotal.sort()
 for strut in strutLengthList:
     splitStrut = strutType.split(':')
 
-        # Below prints total counts on each created sheet
+# Below prints total counts on each created sheet
 for x in hangerListTotal:
     createdAssemblySheet.cell(column = 1, row = next_assembly_row, value = x)
     createdAssemblySheet.cell(column = 2, row = next_assembly_row, value = hangerList.count(x))
@@ -120,6 +129,16 @@ for x in allthreadListTotal:
     createdAllthreadSheet.cell(column = 1, row = next_allthread_row, value = x)
     createdAllthreadSheet.cell(column = 2, row = next_allthread_row, value = (allthreadList.count(x) * 2))
     next_allthread_row += 1
+
+# Creating sum of allthread length & printing
+for x in allthreadList:
+    x = x.replace('"','')
+    x = convert_to_float(x)
+    x = float(x)
+    allthreadLengthList.append(x)
+
+totalAllthreadLength = sum(allthreadLengthList) * 2
+createdAllthreadSheet.cell(column = 1, row = next_allthread_row, value = "Total allthread length = " + str(totalAllthreadLength) + " ft")
 
 wb.save(excelSheetName + '.xlsx')
 print('------------------------Done------------------------')
