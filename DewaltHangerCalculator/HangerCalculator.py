@@ -81,26 +81,29 @@ createdConcatSheet.cell(row = 1, column = 1).value = "PRINT_ME"
 
 # Below generates 2 lists of values
 for row in range(4, sheet.max_row):
-    hangerID = sheet['B' + str(row)].value
-    hangerList.append(hangerID)
+    try:
+       hangerID = sheet['B' + str(row)].value
+       hangerList.append(hangerID)
 
-    strutType = sheet['D' + str(row)].value + ': ' + sheet['E' + str(row)].value
-    strutTypeList.append(strutType)
+       strutType = sheet['D' + str(row)].value + ': ' + sheet['E' + str(row)].value
+       strutTypeList.append(strutType)
 
-    allthreadLength = sheet['F' + str(row)].value
-    allthreadList.append(allthreadLength)
+       allthreadLength = sheet['F' + str(row)].value
+       allthreadList.append(allthreadLength)
 
-    topOfStrut = sheet['C' + str(row)].value
-    areaName = sheet['A' + str(row)].value
+       topOfStrut = sheet['C' + str(row)].value
+       areaName = sheet['A' + str(row)].value
 
-    if allthreadLength not in allthreadListTotal:
-        allthreadListTotal.append(allthreadLength)
+       if allthreadLength not in allthreadListTotal:
+           allthreadListTotal.append(allthreadLength)
 
-    if strutType not in strutTypeListTotal:
-        strutTypeListTotal.append(strutType)
+       if strutType not in strutTypeListTotal:
+           strutTypeListTotal.append(strutType)
 
-    if hangerID not in hangerListTotal:
-        hangerListTotal.append(hangerID)
+       if hangerID not in hangerListTotal:
+           hangerListTotal.append(hangerID)
+    except:
+        continue
 
     # Below creates the concatenation to be used in mail merge
     label = areaName + " Tag: " + hangerID + "                                                           TOU: " + topOfStrut + "                                                                    " + strutType + "                                                               Allthread Length: " + allthreadLength
