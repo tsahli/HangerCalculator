@@ -26,11 +26,11 @@ while True:
         print("\nReadMe:\nColumn A: Site Area\nColumn B: Hanger ID\nColumn C: Attachment 1 Elevation\nColumn D: Material\nColumn E: Support Span\nColumn F: Support 1 Cut Length\n\nLAST ROW IS NOT COUNTED\n\n")
         excelSheetName = raw_input('Enter Name of Excel Sheet: ')
         wb = openpyxl.load_workbook(excelSheetName + '.xlsx')
+        sheet = wb.get_sheet_by_name(excelSheetName)
         break
     except:
         print("\n--------------------------------------\n\nSomething went wrong.\nCheck workbook spelling. Your input is case sensitive.\nEnsure first sheet is the same name as the workbook.\nEnsure this program is in the same folder as the workbook.\n\n--------------------------------------")
 
-sheet = wb.get_sheet_by_name(excelSheetName)
 
 createdSheet = wb.create_sheet()
 createdSheet.title = 'Total Strut'
@@ -133,10 +133,10 @@ for x in allthreadList:
     x = convert_to_float(x)
     allthreadLengthList.append(x)
 
-for strut in strutTypeList:
-    strut = strut.split(':')
+#for strut in strutTypeList:
+    #strut = strut.split(':')
     #strut = strut.replace('"','')
-    print strut
+    #print strut
 
 
 totalAllthreadLength = sum(allthreadLengthList) * 2
