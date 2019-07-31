@@ -23,7 +23,7 @@ def convert_to_float(frac_str):
 
 while True:
     try:
-        print("\nReadMe:\nColumn A: Site Area\nColumn B: Hanger ID\nColumn C: Attachment 1 Elevation\nColumn D: Material\nColumn E: Support Span\nColumn F: Support 1 Cut Length\n\nLAST ROW IS NOT COUNTED\n\n")
+        print("\nReadMe:\nColumn A: Site Area\nColumn B: Hanger ID\nColumn C: Attachment 1 Elevation\nColumn D: Material\nColumn E: Support Span\nColumn F: Support 1 Cut Length\n\n")
         excelSheetName = raw_input('Enter Name of Excel Sheet: ')
         wb = openpyxl.load_workbook(excelSheetName + '.xlsx')
         sheet = wb.get_sheet_by_name(excelSheetName)
@@ -50,6 +50,8 @@ strutTypeListTotal = []
 allthreadList = []
 allthreadListTotal = []
 allthreadLengthList = []
+strutTypeLengthList = []
+strutNameList = []
 next_strut_length_row = 4
 next_assembly_row = 4
 next_allthread_row = 4
@@ -80,7 +82,7 @@ createdAssemblySheet.cell(row = 3, column = 2).value = "Quantity"
 createdConcatSheet.cell(row = 1, column = 1).value = "PRINT_ME"
 
 # Below generates 2 lists of values
-for row in range(4, sheet.max_row):
+for row in range(4, sheet.max_row+1):
     try:
        hangerID = sheet['B' + str(row)].value
        hangerList.append(hangerID)
@@ -136,15 +138,29 @@ for x in allthreadList:
     x = convert_to_float(x)
     allthreadLengthList.append(x)
 
-#for strut in strutTypeList:
-    #strut = strut.split(':')
-    #strut = strut.replace('"','')
-    #print strut
+for x in strutTypeList:
+    x = x.split(': ')
+    x = x[1]
+    x = x.replace('"','')
+    x = convert_to_float(x)
+    strutTypeLengthList.append(x)
 
+#for strut in strutTypeList:
+#    strut = strut.split(':')
+#    strut = strut.replace('"','')
+#    strutName = strut[0]
+#    if strutName not in strutNameList:
+#        strutNameList.append(strutName)
+
+#print(strutNameList)
+    #print strut
 
 totalAllthreadLength = sum(allthreadLengthList) * 2
 totalAlltrheadLengthFeet = totalAllthreadLength / 12
+totalStrutLength = sum(strutTypeLengthList)
+totalStrutLengthFeet = totalStrutLength / 12
 createdAllthreadSheet.cell(column = 1, row = next_allthread_row, value = "Total allthread length = " + str(totalAlltrheadLengthFeet) + " ft")
+createdSheet.cell(column = 1, row = next_strut_length_row, value = "Total strut length = " + str(totalStrutLengthFeet) + " ft")
 
 wb.save(excelSheetName + '.xlsx')
 print('------------------------Done------------------------')
