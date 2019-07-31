@@ -2,7 +2,6 @@
 # HangerCalculator.py
 # Calculates hanger data and prepares label for mail merge
 
-from __future__ import division
 import openpyxl, pprint, time
 from openpyxl.styles import Alignment
 from fractions import Fraction
@@ -132,12 +131,13 @@ for x in allthreadListTotal:
     createdAllthreadSheet.cell(column = 2, row = next_allthread_row, value = (allthreadList.count(x) * 2))
     next_allthread_row += 1
 
-# Creating sum of allthread length & printing
+# Creating sum of allthread length
 for x in allthreadList:
     x = x.replace('"','')
     x = convert_to_float(x)
     allthreadLengthList.append(x)
 
+# Creating sum of strut length
 for x in strutTypeList:
     x = x.split(': ')
     x = x[1]
@@ -145,16 +145,7 @@ for x in strutTypeList:
     x = convert_to_float(x)
     strutTypeLengthList.append(x)
 
-#for strut in strutTypeList:
-#    strut = strut.split(':')
-#    strut = strut.replace('"','')
-#    strutName = strut[0]
-#    if strutName not in strutNameList:
-#        strutNameList.append(strutName)
-
-#print(strutNameList)
-    #print strut
-
+# Summing lists and printing in feet
 totalAllthreadLength = sum(allthreadLengthList) * 2
 totalAlltrheadLengthFeet = totalAllthreadLength / 12
 totalStrutLength = sum(strutTypeLengthList)
