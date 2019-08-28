@@ -24,6 +24,8 @@ while True:
     try:
         print("\nReadMe:\nColumn A: Site Area\nColumn B: Hanger ID\nColumn C: Attachment 1 Elevation\nColumn D: Material\nColumn E: Support Span\nColumn F: Support 1 Cut Length\n\n")
         excelSheetName = raw_input('Enter Name of Excel Sheet: ')
+        jobNumber = raw_input('Enter the job number: ')
+        jobName = raw_input('Enter the job name: ')
         wb = openpyxl.load_workbook(excelSheetName + '.xlsx')
         sheet = wb.get_sheet_by_name(excelSheetName)
         break
@@ -107,7 +109,7 @@ for row in range(4, sheet.max_row+1):
         continue
 
     # Below creates the concatenation to be used in mail merge
-    label = areaName + " Tag: " + hangerID + "                                                           TOU: " + topOfStrut + "                                                                    " + strutType + "                                                               Allthread Length: " + allthreadLength
+    label = areaName + " Tag: " + hangerID + "                                                           TOU: " + topOfStrut + "                                                                    " + strutType + "                                                               Allthread Length: " + allthreadLength + "                                                               " + jobNumber + "-" + jobName
     createdConcatSheet.cell(column = 1, row = next_concat_row, value = label)
     next_concat_row += 1
 
@@ -150,6 +152,8 @@ totalAllthreadLength = sum(allthreadLengthList) * 2
 totalAlltrheadLengthFeet = totalAllthreadLength / 12
 totalStrutLength = sum(strutTypeLengthList)
 totalStrutLengthFeet = totalStrutLength / 12
+totalAlltrheadLengthFeet = round(totalAlltrheadLengthFeet, 2)
+totalStrutLengthFeet = round(totalStrutLengthFeet, 2)
 createdAllthreadSheet.cell(column = 1, row = next_allthread_row, value = "Total allthread length = " + str(totalAlltrheadLengthFeet) + " ft")
 createdSheet.cell(column = 1, row = next_strut_length_row, value = "Total strut length = " + str(totalStrutLengthFeet) + " ft")
 
