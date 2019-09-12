@@ -1,4 +1,4 @@
-#!python
+#!python3
 # HangerCalculator.py
 # Calculates hanger data and prepares label for mail merge
 
@@ -23,9 +23,9 @@ def convert_to_float(frac_str):
 while True:
     try:
         print("\nReadMe:\nColumn A: Site Area\nColumn B: Hanger ID\nColumn C: Attachment 1 Elevation\nColumn D: Material\nColumn E: Support Span\nColumn F: Support 1 Cut Length\n\n")
-        excelSheetName = raw_input('Enter Name of Excel Sheet: ')
-        jobNumber = raw_input('Enter the job number: ')
-        jobName = raw_input('Enter the job name: ')
+        excelSheetName = input('Enter Name of Excel Sheet: ')
+        jobNumber = input('Enter the job number: ')
+        jobName = input('Enter the job name: ')
         wb = openpyxl.load_workbook(excelSheetName + '.xlsx')
         sheet = wb.get_sheet_by_name(excelSheetName)
         break
