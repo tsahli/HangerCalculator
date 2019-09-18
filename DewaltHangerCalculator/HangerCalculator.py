@@ -42,14 +42,8 @@ Column N: Distance Between Tier 1 & 2\nColumn O: Distance between Tier 2 & 3\n\n
 \n\n--------------------------------------""")
 
 
-#createdPFSSheet = wb.create_sheet()
-#createdPFSSheet.title = 'PFSAssemblies'
-createdSheet = wb.create_sheet()
-createdSheet.title = 'Total Strut'
-createdAllthreadSheet = wb.create_sheet()
-createdAllthreadSheet.title = 'Total Allthread Cuts'
-createdAssemblySheet = wb.create_sheet()
-createdAssemblySheet.title = 'Total Assemblies'
+AssemblyListsSheet = wb.create_sheet()
+AssemblyListsSheet.title = 'Assembly Lists'
 createdConcatSheet = wb.create_sheet()
 createdConcatSheet.title = 'Print Me'
 
@@ -92,28 +86,26 @@ next_concat_row = 2
 
 # below creates title blocks for each created sheet
 
-
-
-createdSheet.merge_cells('A1:B2')
-title = createdSheet.cell(row = 1, column = 1)
+AssemblyListsSheet.merge_cells('A1:B2')
+title = AssemblyListsSheet.cell(row = 1, column = 1)
 title.value = 'Total Strut'
 title.alignment = Alignment(horizontal = 'center', vertical = 'center')
-createdSheet.cell(row = 3, column = 1).value = "Strut Type"
-createdSheet.cell(row = 3, column = 2).value = "Quantity"
+AssemblyListsSheet.cell(row = 3, column = 1).value = "Strut Type"
+AssemblyListsSheet.cell(row = 3, column = 2).value = "Quantity"
 
-createdAllthreadSheet.merge_cells('A1:B2')
-title = createdAllthreadSheet.cell(row = 1, column = 1)
+AssemblyListsSheet.merge_cells('D1:E2')
+title = AssemblyListsSheet.cell(row = 1, column = 4)
 title.value = 'Total Allthread'
 title.alignment = Alignment(horizontal = 'center', vertical = 'center')
-createdAllthreadSheet.cell(row = 3, column = 1).value = "Allthread Length"
-createdAllthreadSheet.cell(row = 3, column = 2).value = "Quantity"
+AssemblyListsSheet.cell(row = 3, column = 4).value = "Allthread Length"
+AssemblyListsSheet.cell(row = 3, column = 5).value = "Quantity"
 
-createdAssemblySheet.merge_cells('A1:B2')
-title = createdAssemblySheet.cell(row = 1, column = 1)
+AssemblyListsSheet.merge_cells('G1:H2')
+title = AssemblyListsSheet.cell(row = 1, column = 7)
 title.value = 'Assembly Name and Quantity'
 title.alignment = Alignment(horizontal = 'center', vertical = 'center')
-createdAssemblySheet.cell(row = 3, column = 1).value = "Assembly Name"
-createdAssemblySheet.cell(row = 3, column = 2).value = "Quantity"
+AssemblyListsSheet.cell(row = 3, column = 7).value = "Assembly Name"
+AssemblyListsSheet.cell(row = 3, column = 8).value = "Quantity"
 
 createdConcatSheet.cell(row = 1, column = 1).value = "PRINT_ME"
 
@@ -201,18 +193,18 @@ hangerListTotal.sort()
 
 # Below prints total counts on each created sheet
 for x in hangerListTotal:
-    createdAssemblySheet.cell(column = 1, row = next_assembly_row, value = x)
-    createdAssemblySheet.cell(column = 2, row = next_assembly_row, value = hangerList.count(x))
+    AssemblyListsSheet.cell(column = 7, row = next_assembly_row, value = x)
+    AssemblyListsSheet.cell(column = 8, row = next_assembly_row, value = hangerList.count(x))
     next_assembly_row += 1
 
 for x in strutTypeListTotal:    # Contains each strut type once
-    createdSheet.cell(column = 1, row = next_strut_length_row, value = x)
-    createdSheet.cell(column = 2, row = next_strut_length_row, value = strutTypeList.count(x))
+    AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = x)
+    AssemblyListsSheet.cell(column = 2, row = next_strut_length_row, value = strutTypeList.count(x))
     next_strut_length_row += 1
 
 for x in allthreadListTotal:
-    createdAllthreadSheet.cell(column = 1, row = next_allthread_row, value = x)
-    createdAllthreadSheet.cell(column = 2, row = next_allthread_row, value = (allthreadList.count(x) * 2))
+    AssemblyListsSheet.cell(column = 4, row = next_allthread_row, value = x)
+    AssemblyListsSheet.cell(column = 5, row = next_allthread_row, value = (allthreadList.count(x) * 2))
     next_allthread_row += 1
 
 # Creating sum of allthread length
@@ -320,44 +312,44 @@ totalshallowStrutLengthFeet = roundUp(totalshallowStrutLengthFeet, -1)
 totalB2BshallowStrutLengthFeet = roundUp(totalB2BshallowStrutLengthFeet, -1)
 
 
-createdAllthreadSheet.cell(column = 1, row = next_allthread_row, value = "Total allthread length = " + str(totalAlltrheadLengthFeet) + " ft")
-createdSheet.cell(column = 1, row = next_strut_length_row, value = "Total strut length = " + str(totalStrutLengthFeet) + " ft")
+AssemblyListsSheet.cell(column = 4, row = next_allthread_row, value = "Total allthread length = " + str(totalAlltrheadLengthFeet) + " ft")
+AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total strut length = " + str(totalStrutLengthFeet) + " ft")
 next_strut_length_row +=2
 
-createdSheet.cell(column = 1, row = next_strut_length_row, value = "Total  Deep strut length = " + str(totaldeepStrutLengthFeet) + " ft.")
+AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  Deep strut length = " + str(totaldeepStrutLengthFeet) + " ft.")
 next_strut_length_row +=1
-createdSheet.cell(column = 1, row = next_strut_length_row, value = "Total  B2B Deep strut length = " + str(totalB2BdeepStrutLengthFeet) + " ft.")
+AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  B2B Deep strut length = " + str(totalB2BdeepStrutLengthFeet) + " ft.")
 next_strut_length_row +=1
-createdSheet.cell(column = 1, row = next_strut_length_row, value = "Total  Shallow strut length = " + str(totalshallowStrutLengthFeet) + " ft.")
+AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  Shallow strut length = " + str(totalshallowStrutLengthFeet) + " ft.")
 next_strut_length_row +=1
-createdSheet.cell(column = 1, row = next_strut_length_row, value = "Total  B2B Shallow strut length = " + str(totalB2BshallowStrutLengthFeet) + " ft.")
+AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  B2B Shallow strut length = " + str(totalB2BshallowStrutLengthFeet) + " ft.")
 next_strut_length_row +=2
 
-createdSheet.cell(column = 1, row = next_strut_length_row, value = "Total  single tier Deep Strut racks = "  + str(len(singleTierDeep)))
+AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  single tier Deep Strut racks = "  + str(len(singleTierDeep)))
 next_strut_length_row +=1
-createdSheet.cell(column = 1, row = next_strut_length_row, value = "Total  single tier Back to Back Deep Strut racks = "  + str(len(singleTierB2BDeep)))
+AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  single tier Back to Back Deep Strut racks = "  + str(len(singleTierB2BDeep)))
 next_strut_length_row +=1
-createdSheet.cell(column = 1, row = next_strut_length_row, value = "Total  single tier Shallow Strut racks = "  + str(len(singleTierShallow)))
+AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  single tier Shallow Strut racks = "  + str(len(singleTierShallow)))
 next_strut_length_row +=1
-createdSheet.cell(column = 1, row = next_strut_length_row, value = "Total  single tier Back to Back Shallow Strut racks = "  + str(len(singleTierB2BShallow)))
+AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  single tier Back to Back Shallow Strut racks = "  + str(len(singleTierB2BShallow)))
 next_strut_length_row +=2
 
-createdSheet.cell(column = 1, row = next_strut_length_row, value = "Total  double tier Deep Strut racks = "  + str(len(doubleTierDeep)))
+AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  double tier Deep Strut racks = "  + str(len(doubleTierDeep)))
 next_strut_length_row +=1
-createdSheet.cell(column = 1, row = next_strut_length_row, value = "Total  double tier Back to Back Deep Strut racks = "  + str(len(doubleTierB2BDeep)))
+AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  double tier Back to Back Deep Strut racks = "  + str(len(doubleTierB2BDeep)))
 next_strut_length_row +=1
-createdSheet.cell(column = 1, row = next_strut_length_row, value = "Total  double tier Shallow Strut racks = "  + str(len(doubleTierShallow)))
+AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  double tier Shallow Strut racks = "  + str(len(doubleTierShallow)))
 next_strut_length_row +=1
-createdSheet.cell(column = 1, row = next_strut_length_row, value = "Total  double tier Back to Back Shallow Strut racks = "  + str(len(doubleTierB2BShallow)))
+AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  double tier Back to Back Shallow Strut racks = "  + str(len(doubleTierB2BShallow)))
 next_strut_length_row +=2
 
-createdSheet.cell(column = 1, row = next_strut_length_row, value = "Total  triple tier Deep Strut racks = "  + str(len(tripleTierDeep)))
+AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  triple tier Deep Strut racks = "  + str(len(tripleTierDeep)))
 next_strut_length_row +=1
-createdSheet.cell(column = 1, row = next_strut_length_row, value = "Total  triple tier Back to Back Deep Strut racks = "  + str(len(tripleTierB2BDeep)))
+AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  triple tier Back to Back Deep Strut racks = "  + str(len(tripleTierB2BDeep)))
 next_strut_length_row +=1
-createdSheet.cell(column = 1, row = next_strut_length_row, value = "Total  triple tier Shallow Strut racks = "  + str(len(tripleTierShallow)))
+AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  triple tier Shallow Strut racks = "  + str(len(tripleTierShallow)))
 next_strut_length_row +=1
-createdSheet.cell(column = 1, row = next_strut_length_row, value = "Total  triple tier Back to Back Shallow Strut racks = "  + str(len(tripleTierB2BShallow)))
+AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  triple tier Back to Back Shallow Strut racks = "  + str(len(tripleTierB2BShallow)))
 
 wb.save(excelSheetName + '.xlsx')
 print('------------------------Done------------------------')
