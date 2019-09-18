@@ -318,37 +318,49 @@ next_strut_length_row +=2
 
 AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  Deep strut length = " + str(totaldeepStrutLengthFeet) + " ft.")
 next_strut_length_row +=1
+
 AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  B2B Deep strut length = " + str(totalB2BdeepStrutLengthFeet) + " ft.")
 next_strut_length_row +=1
+
 AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  Shallow strut length = " + str(totalshallowStrutLengthFeet) + " ft.")
 next_strut_length_row +=1
+
 AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  B2B Shallow strut length = " + str(totalB2BshallowStrutLengthFeet) + " ft.")
 next_strut_length_row +=2
 
 AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  single tier Deep Strut racks = "  + str(len(singleTierDeep)))
 next_strut_length_row +=1
+
 AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  single tier Back to Back Deep Strut racks = "  + str(len(singleTierB2BDeep)))
 next_strut_length_row +=1
+
 AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  single tier Shallow Strut racks = "  + str(len(singleTierShallow)))
 next_strut_length_row +=1
+
 AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  single tier Back to Back Shallow Strut racks = "  + str(len(singleTierB2BShallow)))
 next_strut_length_row +=2
 
 AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  double tier Deep Strut racks = "  + str(len(doubleTierDeep)))
 next_strut_length_row +=1
+
 AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  double tier Back to Back Deep Strut racks = "  + str(len(doubleTierB2BDeep)))
 next_strut_length_row +=1
+
 AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  double tier Shallow Strut racks = "  + str(len(doubleTierShallow)))
 next_strut_length_row +=1
+
 AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  double tier Back to Back Shallow Strut racks = "  + str(len(doubleTierB2BShallow)))
 next_strut_length_row +=2
 
 AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  triple tier Deep Strut racks = "  + str(len(tripleTierDeep)))
 next_strut_length_row +=1
+
 AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  triple tier Back to Back Deep Strut racks = "  + str(len(tripleTierB2BDeep)))
 next_strut_length_row +=1
+
 AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  triple tier Shallow Strut racks = "  + str(len(tripleTierShallow)))
 next_strut_length_row +=1
+
 AssemblyListsSheet.cell(column = 1, row = next_strut_length_row, value = "Total  triple tier Back to Back Shallow Strut racks = "  + str(len(tripleTierB2BShallow)))
 
 wb.save(excelSheetName + '.xlsx')
