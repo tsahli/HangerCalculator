@@ -61,6 +61,7 @@ strutNameList = []
 deepStrut = []
 deepStrutLength = []
 B2BdeepStrut = []
+otherMaterial = []
 B2BdeepStrutLength = []
 shallowStrut = []
 shallowStrutLength = []
@@ -113,6 +114,8 @@ createdConcatSheet.cell(row = 1, column = 1).value = "PRINT_ME"
 for row in range(4, sheet.max_row+1):
     try:
 
+       strutCut = sheet{'E' + str(row).value + sheet{'Material': 'D' + str(row).value + sheet{'Cut Length': 'F' + str(row)}}.value
+
        level = sheet['A' + str(row)].value
 
        area = sheet['B' + str(row)].value
@@ -135,6 +138,8 @@ for row in range(4, sheet.max_row+1):
            shallowStrut.append(strutType)
        elif 'SHALLOW' in strutType and 'B2B' in strutType:
            B2BshallowStrut.append(strutType)
+       else:
+           otherMaterial.append(strutTupe)
        
        allthreadLength = sheet['G' + str(row)].value
        allthreadList.append(allthreadLength)
@@ -368,3 +373,6 @@ print('------------------------Done------------------------')
 time.sleep(3)
 
 # Needs total quantities for the different type of strut racks to enter into the pdf calculator
+# Need to output label values into new cells on the row for a better future label Word template. (Top cells will need headers)
+# Need: To catch and report if any struts are not on an even 2" cut length. (Undecided if this calc should auto round to the nearest 2" cut length or not.
+#       As we still want the revit model to be accurate.
