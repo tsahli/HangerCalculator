@@ -41,9 +41,43 @@ Column N: Distance Between Tier 1 & 2\nColumn O: Distance between Tier 2 & 3\n\n
 \nEnsure first sheet is the same name as the workbook.\nEnsure this program is in the same folder as the workbook.
 \n\n--------------------------------------""")
 
+sheetColumnsToMerge = ['A', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
+
+for columns in sheetColumnsToMerge:
+    try:
+        if columns == 'A':
+            cell = sheet[columns + '1'].value
+        else:
+            cell = sheet[columns + '2'].value
+        sheet.merge_cells(columns + '1:' + columns + '2')
+        title = sheet[columns + '1']
+        title.value = cell
+        title.alignment = Alignment(horizontal ='center', vertical = 'center', wrap_text = True)
+    except:
+        print('There was an error')
+
+sheet.column_dimensions['A'].width = 20
+sheet.column_dimensions['B'].width = 10
+sheet.column_dimensions['C'].width = 25
+sheet.column_dimensions['D'].width = 20
+sheet.column_dimensions['E'].width = 10
+sheet.column_dimensions['F'].width = 12
+sheet.column_dimensions['G'].width = 10
+sheet.column_dimensions['H'].width = 12
+sheet.column_dimensions['I'].width = 12
+sheet.column_dimensions['J'].width = 12
+sheet.column_dimensions['K'].width = 12
+sheet.column_dimensions['L'].width = 12
+sheet.column_dimensions['M'].width = 12
+sheet.column_dimensions['N'].width = 18
+sheet.column_dimensions['O'].width = 18
 
 AssemblyListsSheet = wb.create_sheet()
 AssemblyListsSheet.title = 'Assembly Lists'
+AssemblyListsSheet.column_dimensions['A'].width = 50
+AssemblyListsSheet.column_dimensions['D'].width = 30
+AssemblyListsSheet.column_dimensions['G'].width = 15
+
 createdConcatSheet = wb.create_sheet()
 createdConcatSheet.title = 'Print Me'
 
@@ -104,7 +138,7 @@ AssemblyListsSheet.cell(row = 3, column = 5).value = "Quantity"
 AssemblyListsSheet.merge_cells('G1:H2')
 title = AssemblyListsSheet.cell(row = 1, column = 7)
 title.value = 'Assembly Name and Quantity'
-title.alignment = Alignment(horizontal = 'center', vertical = 'center')
+title.alignment = Alignment(horizontal = 'center', vertical = 'center', wrap_text = True)
 AssemblyListsSheet.cell(row = 3, column = 7).value = "Assembly Name"
 AssemblyListsSheet.cell(row = 3, column = 8).value = "Quantity"
 
@@ -114,7 +148,7 @@ createdConcatSheet.cell(row = 1, column = 1).value = "PRINT_ME"
 for row in range(4, sheet.max_row+1):
     try:
 
-       strutCut = sheet{'E' + str(row).value + sheet{'Material': 'D' + str(row).value + sheet{'Cut Length': 'F' + str(row)}}.value
+       #strutCut = sheet{'E' + str(row).value + sheet{'Material': 'D' + str(row).value + sheet{'Cut Length': 'F' + str(row)}}.value
 
        level = sheet['A' + str(row)].value
 
@@ -376,3 +410,6 @@ time.sleep(3)
 # Need to output label values into new cells on the row for a better future label Word template. (Top cells will need headers)
 # Need: To catch and report if any struts are not on an even 2" cut length. (Undecided if this calc should auto round to the nearest 2" cut length or not.
 #       As we still want the revit model to be accurate.
+# Need: To be able to run this against the txt export to eliminate the save to excel process.
+# Need: To format the max row and columns to put inside and outside borders around the data.
+# Need: To calculate hardware for all the different types of tiers
