@@ -26,15 +26,16 @@ def roundUp(x, decimal = 0):
 
 while True:
     try:
-        print("""\nReadMe:\nColumn A: Level\nColumn B: Area ID\nColumn C: Family and Type\nColumn D: Material\nColumn E: Hanger ID\n
-Column F: Support Span\nColumn G: Support 1 Cut Length\nColumn H: Attachment 1 Elevation\nColumn I: Attachment 1 Facing down\n
+        print("""\nReadMe:\nColumn A: Level\nColumn B: Site Area\nColumn C: System\nColumn D: Type\nColumn E: Hanger ID\n
+Column F: Attachment 1 Cut Length\nColumn G: Support 1 Cut Length\nColumn H: Attachment 1 Elevation\nColumn I: Attachment 1 Facing down\n\n
+If there is more than 1 tier then the following parameters apply.\n\n
 Column J: Attachment 2 Elevation\nColumn K: Attachment 2 Facing down\nColumn L: Attachment 3 Elevaton\nColumn M: Attachment 3 Facing down\n
-Column N: Distance Between Tier 1 & 2\nColumn O: Distance between Tier 2 & 3\n\n""")
+Column N: Distance Between Tier 1 & 2 (this is a calculated parameter: Attachment 2 Elevation - Attachment 1 Elevation)\nColumn O: Distance between Tier 2 & 3 (this is a calculated parameter: Attachment 3 Elevation - Attachment 2 Elevation)\n\n""")
         excelSheetName = input('Enter Name of Excel Sheet: ')
         jobNumber = input('Enter the job number: ')
         jobName = input('Enter the job name: ')
         wb = openpyxl.load_workbook(excelSheetName + '.xlsx')
-        sheet = wb.get_sheet_by_name(excelSheetName)
+        sheet = wb.get_sheet_by_name(excelSheetName[0:31])
         break
     except:
         print("""\n--------------------------------------\n\nSomething went wrong.\nCheck workbook spelling. Your input is case sensitive.
@@ -56,7 +57,8 @@ for columns in sheetColumnsToMerge:
     except:
         print('There was an error')
 
-sheet.column_dimensions['A'].width = 20
+sheet
+#sheet.column_dimensions['A'].width = 20
 sheet.column_dimensions['B'].width = 10
 sheet.column_dimensions['C'].width = 25
 sheet.column_dimensions['D'].width = 20
@@ -154,13 +156,9 @@ for row in range(4, sheet.max_row+1):
 
        area = sheet['B' + str(row)].value
 
-       material = sheet['D' + str(row)].value
-       
+       system = sheet['C' + str(row)].value
 
-       hangerID = sheet['E' + str(row)].value
-       hangerList.append(hangerID)  # Used for counting the total unique hanger ID's. All hanger ID's are in this list
-       
-       support_span = sheet['F' + str(row)].value
+       material = sheet['D' + str(row)].value
 
        strutType = sheet['D' + str(row)].value + ': ' + sheet['F' + str(row)].value
        strutTypeList.append(strutType)  # Used for tracking each instance of strutType. This is the list that is counted against for every time it appears.
@@ -174,6 +172,11 @@ for row in range(4, sheet.max_row+1):
            B2BshallowStrut.append(strutType)
        else:
            otherMaterial.append(strutTupe)
+       
+       hangerID = sheet['E' + str(row)].value
+       hangerList.append(hangerID)  # Used for counting the total unique hanger ID's. All hanger ID's are in this list
+       
+       support_span = sheet['F' + str(row)].value      
        
        allthreadLength = sheet['G' + str(row)].value
        allthreadList.append(allthreadLength)
@@ -206,22 +209,22 @@ for row in range(4, sheet.max_row+1):
        # hangerListTotal calculates the total unique hanger ID's. Only 1 unique value in this list
        if hangerID not in hangerListTotal:
            hangerListTotal.append(hangerID)
-    except:
 
+    except:
         continue
 
     # Below creates the concatenation to be used in mail merge
-    label = jobNumber + "-" + jobName + '  ' + level + '         ' + area + " Tag: " + hangerID + "                                      TOU: " + attach1_elev + "                                                                    " + strutType + "                                                               Allthread Length: " + allthreadLength
+    label = jobNumber + "-" + jobName + '  ' + level + ' ' + system + '         ' + area + " Tag: " + hangerID + "                                      TOU: " + attach1_elev + "                                                                    " + strutType + "                                                               Allthread Length: " + allthreadLength
     createdConcatSheet.cell(column = 1, row = next_concat_row, value = label)
     next_concat_row += 1
 
     if attach2_elev:
-        label = jobNumber + "-" + jobName + '  ' + level + '         ' + area + " Tag: " + hangerID + "                                 TOU: " + attach2_elev + "                                                                    " + strutType + "  TIER #2"
+        label = jobNumber + "-" + jobName + '  ' + level + ' ' + system + '         ' + area + " Tag: " + hangerID + "                                 TOU: " + attach2_elev + "                                                                    " + strutType + "  TIER #2"
         createdConcatSheet.cell(column = 1, row = next_concat_row, value = label)
         next_concat_row += 1
     
     if attach3_elev:
-        label = jobNumber + "-" + jobName + '  ' + level + '         ' + area + " Tag: " + hangerID + "                                 TOU: " + attach3_elev + "                                                                    " + strutType + "  TIER #3"
+        label = jobNumber + "-" + jobName + '  ' + level + ' ' + system + '         ' + area + " Tag: " + hangerID + "                                 TOU: " + attach3_elev + "                                                                    " + strutType + "  TIER #3"
         createdConcatSheet.cell(column = 1, row = next_concat_row, value = label)
         next_concat_row += 1
     
@@ -406,10 +409,16 @@ wb.save(excelSheetName + '.xlsx')
 print('------------------------Done------------------------')
 time.sleep(3)
 
-# Needs total quantities for the different type of strut racks to enter into the pdf calculator
+
 # Need to output label values into new cells on the row for a better future label Word template. (Top cells will need headers)
 # Need: To catch and report if any struts are not on an even 2" cut length. (Undecided if this calc should auto round to the nearest 2" cut length or not.
 #       As we still want the revit model to be accurate.
 # Need: To be able to run this against the txt export to eliminate the save to excel process.
 # Need: To format the max row and columns to put inside and outside borders around the data.
-# Need: To calculate hardware for all the different types of tiers
+# Need: To calculate hardware for all the different types of tiers. No fender washer between nut and square washer
+# Need: Assembly list sheet needs header with job name area, etc.
+# Need: To set up file pathing so that the program can live in one place. 
+# Need: Grand Total of assemblies
+# Need: to auto-fill out the PFS trackin workbook.
+# Need: Total strut cut quantities(if more than 1 tier)
+# Need: total number of assemblies 
